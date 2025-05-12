@@ -1,171 +1,174 @@
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
+"use client"
 
-const Hero = () => {
-  // Animation variants for staggered animations
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  };
+import { useState, useEffect } from "react"
+import { motion } from "framer-motion"
+import Link from "next/link"
+import Image from "next/image"
 
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.6,
-        ease: [0.22, 1, 0.36, 1]
-      }
-    }
-  };
+export function Hero() {
+  const [typedText, setTypedText] = useState("")
+  const [currentExampleIndex, setCurrentExampleIndex] = useState(0)
+  const [isDeleting, setIsDeleting] = useState(false)
+  const [typingSpeed, setTypingSpeed] = useState(100)
 
-  // Example text for the typing animation
-  const typingExamples = [
+  const examples = [
     "Crie um chatbot para atendimento ao cliente",
-    "Integre IA em seu processo de vendas",
-    "Automatize respostas para perguntas frequentes",
-    "Desenvolva uma assistente virtual personalizada",
-    "Integre com WhatsApp para comunicação instantânea"
-  ];
-  
-  const [typingIndex, setTypingIndex] = useState(0);
-  const [typingText, setTypingText] = useState('');
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [typingSpeed, setTypingSpeed] = useState(100);
-  
-  // Typing animation effect
+    "Automatize respostas no WhatsApp",
+    "Desenvolva um assistente para seu site",
+    "Treine IA com o conhecimento da sua empresa",
+  ]
+
   useEffect(() => {
-    const currentText = typingExamples[typingIndex];
+    const currentExample = examples[currentExampleIndex]
     
-    const timeout = setTimeout(() => {
+    const timer = setTimeout(() => {
       if (!isDeleting) {
-        // Typing forward
-        setTypingText(currentText.substring(0, typingText.length + 1));
+        setTypedText(currentExample.substring(0, typedText.length + 1))
+        setTypingSpeed(100)
         
-        // If completed typing current text
-        if (typingText.length === currentText.length) {
-          // Pause before deleting
-          setTypingSpeed(1500);
-          setIsDeleting(true);
-        } else {
-          // Regular typing speed
-          setTypingSpeed(80 - Math.random() * 40);
+        if (typedText.length === currentExample.length) {
+          setIsDeleting(true)
+          setTypingSpeed(50)
+          setTimeout(() => {
+            setTypingSpeed(30)
+          }, 1000)
         }
       } else {
-        // Deleting
-        setTypingText(currentText.substring(0, typingText.length - 1));
+        setTypedText(currentExample.substring(0, typedText.length - 1))
         
-        // If completed deleting current text
-        if (typingText.length === 0) {
-          setIsDeleting(false);
-          // Move to next example
-          setTypingIndex((typingIndex + 1) % typingExamples.length);
-          // Pause before typing next text
-          setTypingSpeed(500);
-        } else {
-          // Regular deleting speed (faster than typing)
-          setTypingSpeed(40 - Math.random() * 20);
+        if (typedText.length === 0) {
+          setIsDeleting(false)
+          setCurrentExampleIndex((currentExampleIndex + 1) % examples.length)
         }
       }
-    }, typingSpeed);
+    }, typingSpeed)
     
-    return () => clearTimeout(timeout);
-  }, [typingText, typingIndex, isDeleting, typingSpeed, typingExamples]);
-  
+    return () => clearTimeout(timer)
+  }, [typedText, currentExampleIndex, isDeleting, typingSpeed, examples])
+
   return (
-    <section className="relative min-h-screen flex items-center pt-32 pb-20 overflow-hidden">
-      {/* Background gradient effects */}
-      <div className="absolute inset-0 bg-background overflow-hidden">
-        <div className="absolute top-0 -left-10 w-72 h-72 bg-accent-blue opacity-10 rounded-full filter blur-3xl"></div>
-        <div className="absolute top-60 -right-10 w-72 h-72 bg-accent-purple opacity-10 rounded-full filter blur-3xl"></div>
-        <div className="absolute -bottom-10 left-1/3 w-72 h-72 bg-accent-pink opacity-10 rounded-full filter blur-3xl"></div>
-        
-        {/* Grid background pattern */}
-        <div className="absolute inset-0 grid-bg opacity-40"></div>
-      </div>
-      
-      <div className="container mx-auto px-4 z-10">
-        <motion.div
-          className="max-w-4xl mx-auto text-center"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          {/* Main headline */}
+    <section className="section-platform pt-36 md:pt-40 overflow-hidden bg-gradient-platform">
+      <div className="container-platform">
+        <div className="max-w-4xl mx-auto text-center mb-16">
           <motion.h1 
-            className="text-4xl md:text-6xl font-bold mb-6"
-            variants={itemVariants}
+            className="heading-hero mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
           >
-            Inteligência artificial para <span className="gradient-text">todos</span>
+            API de inteligência artificial para transformar seu negócio
           </motion.h1>
           
-          {/* Subheadline */}
-          <motion.h2 
-            className="text-xl md:text-2xl text-foreground-secondary mb-8"
-            variants={itemVariants}
+          <motion.div
+            className="body-large text-muted-foreground max-w-3xl mx-auto mb-10"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
           >
-            Plataforma de IA conversacional para empresas que desejam automatizar o atendimento ao cliente
-          </motion.h2>
+            <p>
+              Nossa plataforma oferece modelos de IA estado-da-arte e APIs para criar 
+              aplicações que compreendem e geram texto, imagens e código.
+            </p>
+          </motion.div>
           
-          {/* Typing animation */}
-          <motion.div 
-            className="h-24 mb-8 flex items-center justify-center"
-            variants={itemVariants}
+          <motion.div
+            className="h-16 flex items-center justify-center mb-10"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <div className="bg-surface p-4 rounded-lg max-w-xl mx-auto">
-              <p className="text-md md:text-lg text-foreground-secondary">
-                <span className="text-white font-mono">&gt; </span>
-                <span>{typingText}</span>
-                <span className="inline-block w-2 h-5 bg-accent-blue ml-1 animate-pulse"></span>
+            <div className="bg-accent/50 border border-border rounded-lg px-6 py-3 inline-block">
+              <p className="text-lg">
+                <span>{typedText}</span>
+                <span className="animate-blink">|</span>
               </p>
             </div>
           </motion.div>
           
-          {/* CTA buttons */}
           <motion.div 
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
-            variants={itemVariants}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <Link 
-              href="/start" 
-              className="btn btn-primary px-8 py-3 text-base md:text-lg font-medium"
+            <Link
+              href="/cadastro"
+              className="btn-primary w-full sm:w-auto"
             >
               Começar gratuitamente
             </Link>
-            <Link 
-              href="/demo" 
-              className="btn btn-secondary px-8 py-3 text-base md:text-lg font-medium"
+            <Link
+              href="/docs/inicio-rapido"
+              className="btn-outline w-full sm:w-auto"
             >
-              Ver demonstração
+              Documentação
             </Link>
           </motion.div>
-          
-          {/* Trust badge */}
-          <motion.div 
-            className="mt-12 text-foreground-secondary text-sm"
-            variants={itemVariants}
-          >
-            <p>Utilizado por mais de 10.000 empresas em todo o Brasil</p>
-            <div className="flex justify-center items-center mt-6 space-x-8 opacity-70">
-              {/* These would be actual logo images in a real site */}
-              <div className="h-6">Empresa 1</div>
-              <div className="h-6">Empresa 2</div>
-              <div className="h-6">Empresa 3</div>
-              <div className="h-6">Empresa 4</div>
-              <div className="h-6">Empresa 5</div>
+        </div>
+        
+        {/* Code Example Card */}
+        <motion.div
+          className="max-w-4xl mx-auto rounded-xl overflow-hidden shadow-lg"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+        >
+          <div className="bg-secondary text-secondary-foreground p-2 flex items-center">
+            <div className="flex space-x-1.5 pl-1">
+              <div className="w-3 h-3 rounded-full bg-destructive/80"></div>
+              <div className="w-3 h-3 rounded-full bg-amber-400/80"></div>
+              <div className="w-3 h-3 rounded-full bg-green-400/80"></div>
             </div>
-          </motion.div>
+            <div className="ml-4 text-xs font-medium text-secondary-foreground/70">Exemplo de API</div>
+          </div>
+          <div className="bg-[#1E1E1E] p-4 overflow-x-auto text-sm font-mono text-gray-300">
+            <pre className="whitespace-pre"><code>{`import requests
+import json
+
+# Define a API URL e key
+url = "https://api.agentesdeconversao.com.br/v1/chat/completions"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {AGENTES_API_KEY}"
+}
+
+# Crie sua requisição
+data = {
+    "model": "agentes-3",
+    "messages": [
+        {"role": "system", "content": "Você é um assistente útil especializado em vendas."},
+        {"role": "user", "content": "Como posso aumentar a conversão do meu e-commerce?"}
+    ]
+}
+
+# Envie a requisição
+response = requests.post(url, headers=headers, data=json.dumps(data))
+print(response.json())
+`}</code></pre>
+          </div>
+        </motion.div>
+        
+        {/* API Stats & Partners */}
+        <motion.div
+          className="mt-20 text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+        >
+          <p className="text-sm text-muted-foreground mb-4">
+            Utilizado por empresas inovadoras em todo o Brasil
+          </p>
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
+            {['Empresa A', 'Empresa B', 'Empresa C', 'Empresa D', 'Empresa E'].map((company, index) => (
+              <div key={index} className="grayscale opacity-70 hover:opacity-100 transition-opacity">
+                <div className="h-8">
+                  <span className="text-sm font-medium">{company}</span>
+                </div>
+              </div>
+            ))}
+          </div>
         </motion.div>
       </div>
     </section>
-  );
-};
-
-export default Hero;
+  )
+}

@@ -1,146 +1,159 @@
-import { motion } from 'framer-motion';
-import Image from 'next/image';
+"use client"
 
-const Features = () => {
-  // Features data with icons
+import { motion } from "framer-motion"
+import Image from "next/image"
+import { 
+  MessageSquare, 
+  Zap, 
+  BarChart3, 
+  PuzzlePiece,
+  Lock,
+  Globe
+} from "lucide-react"
+
+export function Features() {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  }
+  
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.5
+      }
+    }
+  }
+
   const features = [
     {
-      title: 'Chatbots Inteligentes',
-      description:
-        'Crie assistentes virtuais avançados que compreendem linguagem natural e fornecem respostas contextuais para seus clientes.',
-      icon: '💬',
+      icon: <MessageSquare className="w-6 h-6 text-primary" />,
+      title: "Assistentes Inteligentes",
+      description: "Desenvolva chatbots treinados com o conhecimento específico da sua empresa"
     },
     {
-      title: 'Integração Multi-canal',
-      description:
-        'Conecte-se com seus clientes onde eles estiverem: WhatsApp, Facebook, Instagram, site e muito mais.',
-      icon: '🔄',
+      icon: <Zap className="w-6 h-6 text-primary" />,
+      title: "Automatização",
+      description: "Automatize respostas e processos de atendimento sem perder a personalização"
     },
     {
-      title: 'Análise Avançada',
-      description:
-        'Compreenda o comportamento dos seus clientes com análises detalhadas e insights acionáveis.',
-      icon: '📊',
+      icon: <BarChart3 className="w-6 h-6 text-primary" />,
+      title: "Análise de Dados",
+      description: "Extraia insights valiosos das conversas e interações com seus clientes"
     },
     {
-      title: 'Personalização Completa',
-      description:
-        'Adapte completamente a experiência do usuário para refletir a identidade e os valores da sua marca.',
-      icon: '✨',
+      icon: <PuzzlePiece className="w-6 h-6 text-primary" />,
+      title: "Integrações",
+      description: "Conecte com WhatsApp, Telegram, Site, Email e outras plataformas"
     },
     {
-      title: 'Automação de Processos',
-      description:
-        'Automatize tarefas repetitivas e libere sua equipe para se concentrar no que realmente importa.',
-      icon: '⚙️',
+      icon: <Lock className="w-6 h-6 text-primary" />,
+      title: "Dados Seguros",
+      description: "Seus dados permanecem protegidos com criptografia e controles de acesso"
     },
     {
-      title: 'Segurança Empresarial',
-      description:
-        'Proteja seus dados e comunicações com recursos de segurança de nível empresarial.',
-      icon: '🔒',
-    },
-  ];
+      icon: <Globe className="w-6 h-6 text-primary" />,
+      title: "Multiplataforma",
+      description: "Funciona em qualquer dispositivo, sistema operacional ou navegador"
+    }
+  ]
+
+  const integrations = [
+    "WhatsApp",
+    "Telegram",
+    "Instagram",
+    "Facebook",
+    "Google Business",
+    "Email",
+    "SMS",
+    "API Customizada"
+  ]
 
   return (
-    <section className="py-24 bg-background relative">
-      {/* Background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-40 -right-10 w-72 h-72 bg-accent-blue opacity-5 rounded-full filter blur-3xl"></div>
-        <div className="absolute bottom-20 -left-10 w-72 h-72 bg-accent-purple opacity-5 rounded-full filter blur-3xl"></div>
-      </div>
-
-      <div className="container mx-auto px-4 relative z-10">
-        {/* Section header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-3xl md:text-4xl font-bold mb-4"
-          >
-            Recursos <span className="gradient-text">poderosos</span> para sua empresa
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            viewport={{ once: true }}
-            className="text-foreground-secondary text-lg"
-          >
-            Transforme a comunicação com seus clientes usando tecnologia de ponta em IA conversacional
-          </motion.p>
+    <section className="py-16 md:py-24">
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Recursos poderosos para seu negócio
+          </h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Tudo o que você precisa para transformar seu atendimento e vendas com inteligência artificial
+          </p>
         </div>
-
-        {/* Features grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+        >
           {features.map((feature, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className="feature-card"
+              className="bg-card border rounded-lg p-6 hover:shadow-md transition-shadow"
+              variants={itemVariants}
             >
-              <div className="mb-4 text-3xl">{feature.icon}</div>
-              <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
-              <p className="text-foreground-secondary">{feature.description}</p>
+              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                {feature.icon}
+              </div>
+              <h3 className="text-xl font-medium mb-2">{feature.title}</h3>
+              <p className="text-muted-foreground">{feature.description}</p>
             </motion.div>
           ))}
-        </div>
-
-        {/* Platform visualization - Placeholder for actual image */}
-        <motion.div
+        </motion.div>
+        
+        <motion.div 
+          className="mt-32 mb-16"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          viewport={{ once: true }}
-          className="mt-24 p-1 rounded-xl bg-gradient-to-r from-accent-blue via-accent-purple to-accent-pink"
+          transition={{ duration: 0.7 }}
+          viewport={{ once: true, margin: "-100px" }}
         >
-          <div className="bg-surface rounded-lg p-6 flex items-center justify-center">
-            {/* This would be replaced with an actual image */}
-            <div className="bg-surface-secondary h-96 w-full rounded-md flex items-center justify-center">
-              <p className="text-foreground-secondary">
-                [Imagem da plataforma em ação]
-              </p>
+          <div className="relative max-w-5xl mx-auto">
+            <div className="aspect-video rounded-lg overflow-hidden border shadow-xl bg-card">
+              <div className="w-full h-full bg-muted flex items-center justify-center">
+                <span className="text-xl text-muted-foreground">
+                  [Interface da plataforma]
+                </span>
+              </div>
             </div>
+            
+            <div className="absolute -bottom-6 -right-6 -left-6 bg-gradient-to-t from-background via-background to-transparent h-24 pointer-events-none" />
           </div>
         </motion.div>
-
-        {/* Integration logos */}
-        <div className="mt-24 text-center">
-          <motion.h3
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-xl font-semibold mb-8"
-          >
-            Integre com suas ferramentas favoritas
-          </motion.h3>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="flex flex-wrap justify-center items-center gap-8 opacity-70"
-          >
-            {/* Replace with actual integration logos */}
-            <div className="h-8 w-24 bg-surface-secondary rounded flex items-center justify-center">WhatsApp</div>
-            <div className="h-8 w-24 bg-surface-secondary rounded flex items-center justify-center">Telegram</div>
-            <div className="h-8 w-24 bg-surface-secondary rounded flex items-center justify-center">Slack</div>
-            <div className="h-8 w-24 bg-surface-secondary rounded flex items-center justify-center">Instagram</div>
-            <div className="h-8 w-24 bg-surface-secondary rounded flex items-center justify-center">Facebook</div>
-            <div className="h-8 w-24 bg-surface-secondary rounded flex items-center justify-center">Shopify</div>
-            <div className="h-8 w-24 bg-surface-secondary rounded flex items-center justify-center">WordPress</div>
-          </motion.div>
-        </div>
+        
+        <motion.div 
+          className="text-center mt-24"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          <h3 className="text-2xl font-bold mb-6">
+            Integra-se com suas plataformas favoritas
+          </h3>
+          
+          <div className="flex flex-wrap justify-center gap-4">
+            {integrations.map((platform, index) => (
+              <div 
+                key={index}
+                className="bg-card border px-4 py-2 rounded-md text-sm font-medium"
+              >
+                {platform}
+              </div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
-  );
-};
-
-export default Features;
+  )
+}

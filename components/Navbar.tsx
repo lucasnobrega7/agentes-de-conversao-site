@@ -1,147 +1,151 @@
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { motion } from 'framer-motion';
+"use client"
 
-const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const router = useRouter();
+import { useState, useEffect } from "react"
+import Link from "next/link"
+import Image from "next/image"
+import { cn } from "../lib/utils"
+import { motion } from "framer-motion"
+import { 
+  Search,
+  ChevronDown,
+  Menu,
+  X
+} from "lucide-react"
 
-  // Handle scroll event to change navbar style
+export function Navbar() {
+  const [isScrolled, setIsScrolled] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Toggle mobile menu
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
-
-  // Navigation items
-  const navItems = [
-    { name: 'Pesquisa', href: '/research' },
-    { name: 'Produtos', href: '/products' },
-    { name: 'Desenvolvedores', href: '/developers' },
-    { name: 'Empresa', href: '/company' },
-  ];
+      setIsScrolled(window.scrollY > 10)
+    }
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   return (
-    <header
-      className={`fixed w-full z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-background/80 backdrop-blur-md py-3 shadow-md' : 'bg-transparent py-5'
-      }`}
-    >
-      <div className="container mx-auto px-4">
+    <header className={cn(
+      "header-platform",
+      isScrolled ? "header-scrolled" : "header-transparent"
+    )}>
+      <div className="container-platform py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center">
-            <span className="text-xl font-semibold text-white">Agentes de Conversão</span>
+          <Link href="/" className="flex items-center space-x-2">
+            <Image
+              src="/images/logo.svg"
+              alt="Agentes de Conversão"
+              width={32}
+              height={32}
+              className="w-8 h-8"
+            />
+            <span className="font-medium text-lg">Agentes de Conversão</span>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={`text-sm font-medium transition-colors hover:text-white ${
-                  router.pathname === item.href ? 'text-white' : 'text-foreground-secondary'
-                }`}
-              >
-                {item.name}
-              </Link>
-            ))}
-          </nav>
-
-          {/* Desktop CTA Buttons */}
-          <div className="hidden md:flex items-center space-x-4">
-            <Link href="/dashboard" className="text-sm font-medium text-foreground-secondary hover:text-white transition-colors">
-              Login
-            </Link>
-            <Link
-              href="/start"
-              className="bg-accent-blue hover:bg-opacity-90 text-white rounded-md px-4 py-2 text-sm font-medium transition-colors"
+          <div className="hidden md:flex items-center space-x-6">
+            <nav className="flex items-center space-x-6">
+              <NavLink href="/docs/api" label="API" />
+              <NavLink href="/docs/guias" label="Guias" />
+              <NavLink href="/exemplos" label="Exemplos" />
+              <NavLink href="/precos" label="Preços" />
+              <NavLink href="/documentacao" label="Documentação" />
+            </nav>
+            
+            {/* Search Button */}
+            <button 
+              className="flex items-center text-muted-foreground hover:text-foreground transition-colors"
+              aria-label="Pesquisar"
             >
-              Começar
-            </Link>
+              <Search size={18} />
+            </button>
+            
+            {/* Auth Buttons */}
+            <div className="flex items-center space-x-3 pl-3 border-l border-border">
+              <Link
+                href="/login"
+                className="nav-link"
+              >
+                Entrar
+              </Link>
+              <Link
+                href="/cadastro"
+                className="btn-primary"
+              >
+                Cadastrar
+              </Link>
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden text-foreground-secondary hover:text-white"
-            onClick={toggleMobileMenu}
-            aria-label="Toggle menu"
+            className="block md:hidden"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label={isMenuOpen ? "Fechar menu" : "Abrir menu"}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              {isMobileMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
-              )}
-            </svg>
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </div>
 
       {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.3 }}
-          className="md:hidden bg-surface py-4 px-4 shadow-lg"
-        >
-          <nav className="flex flex-col space-y-4">
-            {navItems.map((item) => (
+      {isMenuOpen && (
+        <div className="md:hidden bg-background/95 backdrop-blur-md border-t border-border">
+          <div className="container-platform py-4 space-y-4">
+            <nav className="flex flex-col space-y-3">
+              <MobileNavLink href="/docs/api" label="API" />
+              <MobileNavLink href="/docs/guias" label="Guias" />
+              <MobileNavLink href="/exemplos" label="Exemplos" />
+              <MobileNavLink href="/precos" label="Preços" />
+              <MobileNavLink href="/documentacao" label="Documentação" />
+            </nav>
+            
+            <div className="flex flex-col space-y-3 pt-4 border-t border-border">
               <Link
-                key={item.name}
-                href={item.href}
-                className={`text-sm font-medium transition-colors hover:text-white ${
-                  router.pathname === item.href ? 'text-white' : 'text-foreground-secondary'
-                }`}
-                onClick={() => setIsMobileMenuOpen(false)}
+                href="/login"
+                className="nav-link"
               >
-                {item.name}
-              </Link>
-            ))}
-            <div className="pt-2 border-t border-surface-secondary flex flex-col space-y-3">
-              <Link
-                href="/dashboard"
-                className="text-sm font-medium text-foreground-secondary hover:text-white transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Login
+                Entrar
               </Link>
               <Link
-                href="/start"
-                className="bg-accent-blue hover:bg-opacity-90 text-white rounded-md px-4 py-2 text-sm font-medium transition-colors text-center"
-                onClick={() => setIsMobileMenuOpen(false)}
+                href="/cadastro"
+                className="btn-primary w-full flex justify-center"
               >
-                Começar
+                Cadastrar
               </Link>
+              
+              {/* Mobile Search */}
+              <div className="relative mt-3">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Search size={16} className="text-muted-foreground" />
+                </div>
+                <input 
+                  type="search" 
+                  placeholder="Pesquisar..." 
+                  className="w-full py-2 pl-10 pr-4 bg-accent/50 border border-border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                />
+              </div>
             </div>
-          </nav>
-        </motion.div>
+          </div>
+        </div>
       )}
     </header>
-  );
-};
+  )
+}
 
-export default Navbar;
+function NavLink({ href, label }: { href: string; label: string }) {
+  return (
+    <Link href={href} className="nav-link">
+      {label}
+    </Link>
+  )
+}
+
+function MobileNavLink({ href, label }: { href: string; label: string }) {
+  return (
+    <Link href={href} className="block py-2 text-foreground font-medium">
+      {label}
+    </Link>
+  )
+}
