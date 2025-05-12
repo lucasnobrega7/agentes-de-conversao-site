@@ -2,11 +2,11 @@
 
 import { motion } from "framer-motion"
 import Image from "next/image"
-import { 
-  MessageSquare, 
-  Zap, 
-  BarChart3, 
-  PuzzlePiece,
+import {
+  MessageSquare,
+  Zap,
+  BarChart3,
+  Puzzle, // Substituido PuzzlePiece por Puzzle
   Lock,
   Globe
 } from "lucide-react"
@@ -50,7 +50,7 @@ export function Features() {
       description: "Extraia insights valiosos das conversas e interações com seus clientes"
     },
     {
-      icon: <PuzzlePiece className="w-6 h-6 text-primary" />,
+      icon: <Puzzle className="w-6 h-6 text-primary" />,
       title: "Integrações",
       description: "Conecte com WhatsApp, Telegram, Site, Email e outras plataformas"
     },

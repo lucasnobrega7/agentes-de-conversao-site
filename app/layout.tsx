@@ -1,9 +1,10 @@
 import '../styles/globals.css'
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 
 export const metadata: Metadata = {
   title: 'Agentes de Conversão | Plataforma',
   description: 'Explore recursos, tutoriais, documentação de API e exemplos dinâmicos para aproveitar ao máximo a plataforma de inteligência artificial Agentes de Conversão.',
+  metadataBase: new URL('https://agentesdeconversao.com.br'),
   openGraph: {
     title: 'Agentes de Conversão | Plataforma',
     description: 'Explore recursos para desenvolvedores, tutoriais, documentação de API e exemplos dinâmicos para aproveitar ao máximo nossa plataforma.',
@@ -24,6 +25,9 @@ export const metadata: Metadata = {
     description: 'Explore recursos para desenvolvedores, tutoriais, documentação de API e exemplos dinâmicos para aproveitar ao máximo nossa plataforma.',
     images: ['/images/platform-opengraph.png'],
   },
+}
+
+export const viewport: Viewport = {
   themeColor: '#0a0a0a',
 }
 

@@ -72,7 +72,7 @@ export function CTA() {
                       <Star key={i} size={16} fill="currentColor" />
                     ))}
                   </div>
-                  <p className="text-sm mb-4">"{testimonial.quote}"</p>
+                  <p className="text-sm mb-4">&ldquo;{testimonial.quote}&rdquo;</p>
                   <div className="text-sm">
                     <p className="font-medium">{testimonial.name}</p>
                     <p className="text-muted-foreground">{testimonial.company}</p>

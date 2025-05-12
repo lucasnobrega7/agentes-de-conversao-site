@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
 import Image from "next/image"
@@ -11,21 +11,22 @@ export function Hero() {
   const [isDeleting, setIsDeleting] = useState(false)
   const [typingSpeed, setTypingSpeed] = useState(100)
 
-  const examples = [
+  const examples = useMemo(() => [
     "Crie um chatbot para atendimento ao cliente",
     "Automatize respostas no WhatsApp",
     "Desenvolva um assistente para seu site",
     "Treine IA com o conhecimento da sua empresa",
-  ]
+  ], [])
 
   useEffect(() => {
-    const currentExample = examples[currentExampleIndex]
-    
+    const examplesList = examples; // Use a local copy inside the effect
+    const currentExample = examplesList[currentExampleIndex]
+
     const timer = setTimeout(() => {
       if (!isDeleting) {
         setTypedText(currentExample.substring(0, typedText.length + 1))
         setTypingSpeed(100)
-        
+
         if (typedText.length === currentExample.length) {
           setIsDeleting(true)
           setTypingSpeed(50)
@@ -35,14 +36,14 @@ export function Hero() {
         }
       } else {
         setTypedText(currentExample.substring(0, typedText.length - 1))
-        
+
         if (typedText.length === 0) {
           setIsDeleting(false)
-          setCurrentExampleIndex((currentExampleIndex + 1) % examples.length)
+          setCurrentExampleIndex((currentExampleIndex + 1) % examplesList.length)
         }
       }
     }, typingSpeed)
-    
+
     return () => clearTimeout(timer)
   }, [typedText, currentExampleIndex, isDeleting, typingSpeed, examples])
 
