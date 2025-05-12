@@ -1,0 +1,149 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definição da fonte Söhne */
+@font-face {
+  font-family: 'Söhne';
+  src: url('/fonts/TestSöhne-Buch.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Söhne';
+  src: url('/fonts/TestSöhne-Kräftig.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Söhne';
+  src: url('/fonts/TestSöhne-Halbfett.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Söhne';
+  src: url('/fonts/TestSöhne-Dreiviertelfett.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Söhne Mono for code blocks */
+@font-face {
+  font-family: 'Söhne Mono';
+  src: url('/fonts/TestSöhneMono-Buch.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Fallback for when Söhne isn't available */
+@font-face {
+  font-family: 'Söhne Fallback';
+  size-adjust: 100%;
+  ascent-override: 90%;
+  src: local('Arial');
+}
+
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-rgb: 15, 15, 15;
+  --accent-blue: 15, 164, 127;
+  --accent-purple: 171, 104, 255;
+  --accent-pink: 255, 126, 199;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
+  font-family: 'Söhne', 'Söhne Fallback', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* OpenAI style components */
+.container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.btn {
+  @apply px-4 py-2 rounded-md font-medium transition-all duration-200 ease-in-out;
+}
+
+.btn-primary {
+  @apply bg-accent-blue text-white hover:bg-opacity-90;
+}
+
+.btn-secondary {
+  @apply bg-surface text-white hover:bg-surface-secondary;
+}
+
+.input {
+  @apply bg-surface text-white px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-blue;
+}
+
+.gradient-text {
+  @apply text-transparent bg-clip-text bg-gradient-to-r from-accent-blue to-accent-purple;
+}
+
+/* Hero section glow effect */
+.glow {
+  position: relative;
+}
+
+.glow::before {
+  content: '';
+  position: absolute;
+  inset: -20px;
+  background: radial-gradient(circle at center, rgba(15, 164, 127, 0.2), transparent 70%);
+  z-index: -1;
+  filter: blur(30px);
+}
+
+/* Grid backgrounds for sections */
+.grid-bg {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 0);
+  background-size: 30px 30px;
+  background-position: -15px -15px;
+}
+
+/* Animations */
+.animate-in {
+  animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+.animate-in-delay-1 {
+  animation: fadeIn 0.5s ease-in-out 0.1s forwards;
+  opacity: 0;
+}
+
+.animate-in-delay-2 {
+  animation: fadeIn 0.5s ease-in-out 0.2s forwards;
+  opacity: 0;
+}
+
+.animate-in-delay-3 {
+  animation: fadeIn 0.5s ease-in-out 0.3s forwards;
+  opacity: 0;
+}
+
+/* Feature card hover effect */
+.feature-card {
+  @apply bg-surface rounded-xl p-6 transition-all duration-300;
+}
+
+.feature-card:hover {
+  @apply transform -translate-y-1 shadow-lg shadow-accent-blue/10;
+}
+
+/* Glassmorphism effect */
+.glass {
+  @apply bg-opacity-10 backdrop-blur-lg bg-white border border-white/10 rounded-xl;
+}
